@@ -1,0 +1,387 @@
+@import "tailwindcss";
+
+:root {
+  /* ── Font Families ──────────────────────────────────────────────── */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  --font-terminal: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+  --font-display: var(--font-orbitron), 'Orbitron', sans-serif;
+
+  /* ── Cosmic Theme Colors ────────────────────────────────────────── */
+  --foreground: #e0e0ff;
+  --background: #000000;
+
+  /* Primary Accents */
+  --primary: #6c5ce7;
+  --primary-glow: rgba(108, 92, 231, 1);
+
+  /* Secondary Accents */
+  --secondary: #00cec9;
+  --secondary-glow: rgba(0, 206, 201, 1);
+
+  /* Terminal Palette */
+  --term-green: #00ff88;
+  --term-green-dim: rgba(0, 255, 136, 0.4);
+  --term-cyan: #00d4ff;
+  --term-purple: #a855f7;
+  --term-yellow: #facc15;
+  --term-red: #f87171;
+
+  /* Utilities */
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Custom Utilities ─────────────────────────────────────────────── */
+.glass-panel {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Global Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020205;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ── Legacy Terminal Animations (kept for backwards compat) ───────── */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100vh);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+}
+
+@keyframes terminal-glow {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-terminal-glow {
+  animation: terminal-glow 4s ease-in-out infinite;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   TERMINAL PANE STYLES
+   ════════════════════════════════════════════════════════════════════ */
+
+.term-root {
+  box-sizing: border-box;
+  font-family: var(--font-terminal);
+  font-size: 16px;
+  background: #0a0a0c;
+  border: 1px solid rgba(0, 255, 136, 0.12);
+  box-shadow:
+    0 0 60px rgba(0, 255, 136, 0.05),
+    0 0 120px rgba(0, 0, 0, 0.8),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.term-root * {
+  box-sizing: border-box;
+}
+
+/* ── CRT Scanline Overlay ─────────────────────────────────────────── */
+.crt-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px);
+  pointer-events: none;
+  z-index: 20;
+  border-radius: inherit;
+}
+
+/* ── Noise Grain ──────────────────────────────────────────────────── */
+@keyframes grain {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-2%, -3%);
+  }
+
+  30% {
+    transform: translate(3%, -1%);
+  }
+
+  50% {
+    transform: translate(-1%, 4%);
+  }
+
+  70% {
+    transform: translate(4%, 2%);
+  }
+
+  90% {
+    transform: translate(-3%, 1%);
+  }
+}
+
+.noise-grain::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  animation: grain 0.8s steps(1) infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Phosphor Scanline Sweep ──────────────────────────────────────── */
+@keyframes scanline-sweep {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(3000%);
+  }
+}
+
+.scanline-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(transparent, rgba(0, 255, 136, 0.12), transparent);
+  animation: scanline-sweep 7s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.25);
+}
+
+/* ── Glow Pulse (used as inline animation ref) ────────────────────── */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ── Cursor Blink ─────────────────────────────────────────────────── */
+@keyframes cursor-blink {
+
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-block {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--term-green);
+  margin-left: 2px;
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+}
+
+/* ── Display / Orbitron ───────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-terminal {
+  font-family: var(--font-terminal);
+}
+
+/* ── Neon Cards ───────────────────────────────────────────────────── */
+.neon-card {
+  background: rgba(15, 15, 20, 0.9);
+  border: 1px solid rgba(0, 255, 136, 0.12);
+  border-radius: 6px;
+  position: relative;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.neon-card:hover {
+  border-color: rgba(0, 255, 136, 0.35);
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.08),
+    inset 0 0 30px rgba(0, 255, 136, 0.02);
+}
+
+.neon-card-purple:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.1),
+    inset 0 0 30px rgba(168, 85, 247, 0.02);
+}
+
+/* Top hairline gradient on every neon card */
+.neon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.5), transparent);
+  border-radius: 50%;
+}
+
+/* ── Terminal Scrollbar ───────────────────────────────────────────── */
+.term-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.term-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.term-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.25);
+  border-radius: 2px;
+}
+
+.term-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.5);
+}
+
+/* ── Skill Tags ───────────────────────────────────────────────────── */
+.skill-tag {
+  background: rgba(30, 30, 40, 0.9);
+  border: 1px solid rgba(100, 100, 120, 0.3);
+  color: #9ca3af;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.skill-tag:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  color: var(--term-cyan);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.15);
+}
+
+/* ── Avatar Ring Rotation ─────────────────────────────────────────── */
+@keyframes ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.avatar-ring-spin {
+  animation: ring-spin 12s linear infinite;
+}
+
+/* ── Dot Grid Background ──────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(0, 255, 136, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Corner Bracket Accents ───────────────────────────────────────── */
+.corner-tl::before,
+.corner-tl::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid rgba(0, 255, 136, 0.6);
+  border-left: 2px solid rgba(0, 255, 136, 0.6);
+}
+
+.corner-br::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid rgba(0, 255, 136, 0.6);
+  border-right: 2px solid rgba(0, 255, 136, 0.6);
+}
+
+/* ── Help Command Table ───────────────────────────────────────────── */
+.cmd-row {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.cmd-row:last-child {
+  border-bottom: none;
+}
