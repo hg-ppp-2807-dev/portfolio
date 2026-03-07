@@ -27,6 +27,14 @@ export const portfolioData = {
     ],
     projects: [
         {
+            title: "IntentScope",
+            description: "An intelligent API gateway for LLMs featuring dynamic routing, intent analysis, and smart token budget management.",
+            techStack: ["Next.js", "FastAPI", "Go", "PostgreSQL", "Docker"],
+            link: "https://intent-scope.vercel.app",
+            github: "https://github.com/hg-ppp-2807-dev/intent-scope",
+            image: "/projects/intentscope.jpg"
+        },
+        {
             title: "Volunteer Connect",
             description: "A Django-based volunteer engagement platform featuring event scheduling, geolocation-based recommendations using Google Maps API, and dynamic certificate generation.",
             techStack: ["Django", "Python", "Google Maps API", "PostgreSQL"],
@@ -34,29 +42,8 @@ export const portfolioData = {
             github: "https://github.com/pritampalai28/volunteer-connect", // Placeholder
             image: "/projects/volunteer.jpg"
         },
-        {
-            title: "Mobile WebRTC Module",
-            description: "Real-time audio/video communication module for mobile apps using WebRTC and Socket.io, featuring seamless connection handling and STUN/TURN server configuration.",
-            techStack: ["React Native", "WebRTC", "Socket.io", "Firebase"],
-            link: "#",
-            github: "https://github.com/pritampalai28/webrtc-module", // Placeholder
-            image: "/projects/webrtc.jpg"
-        },
-        {
-            title: "3D Portfolio",
-            description: "An immersive 3D portfolio website built with Next.js, Three.js, and Framer Motion, featuring interactive 3D elements and smooth page transitions.",
-            techStack: ["Next.js", "Three.js", "React Three Fiber", "Tailwind CSS"],
-            link: "#",
-            github: "https://github.com/pritampalai28/portfolio",
-            image: "/projects/portfolio.jpg"
-        },
-        {
-            title: "AI Chat Assistant",
-            description: "A specialized AI chat interface integrating modern LLMs for code assistance and general queries.",
-            techStack: ["React", "OpenAI API", "Node.js"],
-            link: "#",
-            github: "#",
-            image: "/projects/ai-chat.jpg"
-        }
+
+
+
     ]
 };
