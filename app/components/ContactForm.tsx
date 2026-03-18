@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useIDEStore } from "@/store/useIDEStore";
 import { ExternalLink } from "lucide-react";
+import { event } from "@/lib/gtag";
 
 export default function ContactForm() {
     const { addTerminalLog } = useIDEStore();
@@ -71,7 +72,19 @@ export default function ContactForm() {
                 </div>
                 <div>
                     <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">GitHub</div>
-                    <a href="https://github.com/hg-ppp-2807-dev" target="_blank" rel="noreferrer" className="text-white hover:text-gray-300 transition-colors flex items-center gap-1">
+                    <a
+                        href="https://github.com/hg-ppp-2807-dev"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-white hover:text-gray-300 transition-colors flex items-center gap-1"
+                        onClick={() =>
+                            event({
+                                action: "github_click",
+                                category: "portfolio",
+                                label: "github_profile",
+                            })
+                        }
+                    >
                         github.com/hg-ppp-2807-dev <ExternalLink size={12} />
                     </a>
                 </div>

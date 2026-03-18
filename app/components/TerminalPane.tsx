@@ -7,6 +7,7 @@ import { ExternalLink, Github, Terminal, Wifi, Battery, Clock } from "lucide-rea
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactForm from "./ContactForm";
+import { event } from "@/lib/gtag";
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -435,6 +436,38 @@ export default function TerminalPane() {
                                 <span key={i} className="skill-tag text-xs">{tech}</span>
                             ))}
                         </motion.div>
+
+                        {/* GitHub profile link */}
+                        <motion.a
+                            href="https://github.com/hg-ppp-2807-dev"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, x: -16 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.75, duration: 0.5 }}
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() =>
+                                event({
+                                    action: "github_click",
+                                    category: "portfolio",
+                                    label: "github_profile_header",
+                                })
+                            }
+                            className="inline-flex items-center gap-2 mt-1 px-3 py-1.5 rounded text-xs font-semibold tracking-wider transition-all"
+                            style={{
+                                background: 'rgba(0,255,136,0.06)',
+                                border: '1px solid rgba(0,255,136,0.25)',
+                                color: '#00ff88',
+                                boxShadow: '0 0 0 0 rgba(0,255,136,0)',
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 12px rgba(0,255,136,0.25)')}
+                            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 0 0 rgba(0,255,136,0)')}
+                        >
+                            <Github size={13} />
+                            github.com/hg-ppp-2807-dev
+                            <ExternalLink size={10} style={{ opacity: 0.6 }} />
+                        </motion.a>
                     </div>
                 </div>
             </motion.div>
