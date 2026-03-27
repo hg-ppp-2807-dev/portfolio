@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, JetBrains_Mono, Orbitron } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import GoogleAnalytics from "@/app/components/GoogleAnalytics";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
       >
         <GoogleAnalytics />
         {children}
+        <Analytics />
       </body>
     </html>
   );
